@@ -14,6 +14,45 @@ pnpm dev
 bun dev
 ```
 
+Add Prisma to your project:
+
+Create a new db.ts file inside the /lib folder, with the following content:
+
+```bash
+import { PrismaClient } from '@prisma/client';
+
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
+// Avoid instantiating too many instances of Prisma in development
+export const db = globalThis.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV !== 'production') {
+  globalThis.prisma = db;
+}
+```
+
+Initialize Prisma:
+  
+```bash
+npx prisma init
+```
+
+This will create a new folder called `prisma` in the root of your project, and inside a schema.prisma file with a template for your database schema.
+
+It will also create a new .env file in the root of your project with the following content (or similar):
+
+```bash
+DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
+```
+
+Add .env to gitignore:
+
+```bash
+echo ".env" >> .gitignore
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.

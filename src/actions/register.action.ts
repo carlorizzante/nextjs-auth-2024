@@ -8,6 +8,6 @@ export const registerAction = async (values: z.infer<typeof RegisterSchema>) => 
   if (!validatedValues.success) {
     return { error: 'Invalid name, email, or password' }
   } else {
-    return { success: 'Account successfully created!' }
+    return { success: 'Account created!' }
   }
 }
