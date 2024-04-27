@@ -1,13 +1,36 @@
 'use server';
 
+import bcrypt from 'bcryptjs';
 import * as z from 'zod';
+import { getUserByEmail } from '@/data/user';
+import { db } from '@/lib/db';
 import { RegisterSchema } from '@/schemas';
 
 export const registerAction = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedValues = RegisterSchema.safeParse(values);
   if (!validatedValues.success) {
     return { error: 'Invalid name, email, or password' }
+
   } else {
-    return { success: 'Account created!' }
+    const { name, email, password } = validatedValues.data;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // const existingUser = await db.user.findUnique({ where: { email } });
+    const existingUser = await getUserByEmail(email);
+
+    if (existingUser) {
+      return { error: 'Email already used.' }
+    } else {
+      await db.user.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+        },
+      });
+      // TODO: send email confirmation
+      return { success: 'Account created!' }
+
+    }
+
   }
 }
