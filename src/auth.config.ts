@@ -1,12 +1,28 @@
-// Edge compatibility
-// Verify if this file is necessary
-
+import bcrypt from 'bcryptjs';
 import { NextAuthConfig } from 'next-auth';
-import GitHub from 'next-auth/providers/github';
+import Credentials from 'next-auth/providers/credentials';
+import { getUserByEmail } from './data/user';
+import { LoginSchema } from './schemas';
 
 export default {
   debug: true,
-  providers: [GitHub],
+  providers: [Credentials({
+    async authorize(credentials) {
+      const validatedFields = LoginSchema.safeParse(credentials);
+      if (validatedFields.success) {
+        const { email, password } = validatedFields.data;
+        const user = await getUserByEmail(email);
+        if (!user || !user.password) {
+          return Promise.resolve(null);
+        }
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (passwordMatch) {
+          return Promise.resolve(user);
+        }
+      }
+      return Promise.resolve(null);
+    }
+  })]
 } satisfies NextAuthConfig;
 
 /**
@@ -24,12 +40,12 @@ export const publicRoutes = [
  * @type {string[]}
  */
 export const authRoutes = [
+  // '/auth/*',
   '/auth/login',
   '/auth/register',
   // '/auth/forgot-password',
   // '/auth/reset-password',
   // '/auth/verify-email',
-  // '/auth/*',
 ];
 
 /**
