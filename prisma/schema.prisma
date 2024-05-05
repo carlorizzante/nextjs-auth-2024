@@ -20,6 +20,12 @@ datasource db {
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
+enum UserRole {
+  ADMIN
+  USER
+  GUEST
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -28,6 +34,7 @@ model User {
   image         String?
   password      String?
   accounts      Account[]
+  role          UserRole  @default(USER)
   // sessions      Session[]
  
   @@map("users")
