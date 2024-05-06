@@ -11,7 +11,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn(data) {
       console.log('signIn', data);
-      return true;
+      return true; // Skip email verification for now
+      const user = await getUserById(data.user.id);
+      console.log('user?.emailVerified', user?.emailVerified)
+      return !!user?.emailVerified
     },
     async jwt(data) {
       console.log('jwt', data);
@@ -32,6 +35,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session;
     },
+  },
+  events: {
+    linkAccount: async (message) => {
+      console.log('linkAccount', message);
+      const { user } = message;
+      await db.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() }
+      });
+    }
   },
   session: { strategy: 'jwt' }
 })

@@ -11,9 +11,9 @@ import type {
   WithClassName,
 } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Social } from './auth/social';
 import { BackButton } from './back-button';
 import { Header } from './header';
-import { Social } from './social';
 
 type CardWrapperProps = withChildren & WithClassName & {
   headerLabel: string;
