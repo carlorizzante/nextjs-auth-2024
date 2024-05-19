@@ -3,11 +3,15 @@ import {
   useState,
   useTransition,
 } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { loginAction } from '@/actions';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
+import {
+  CardWrapper,
+  FormError,
+  FormSuccess,
+} from '@/components';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -20,12 +24,15 @@ import {
 import { Input } from '@/components/ui/input';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CardWrapper } from '../card-wrapper';
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get('error') === 'OAuthAccountNotLinked'
+    ? 'This account is already linked to another provider. It is unsafe to automatically link accounts. Please login with your already linked account, or with username and password.'
+    : undefined;
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -42,6 +49,7 @@ export const LoginForm = () => {
       loginAction(values)
         .then((response) => {
           setError(response.error);
+          // Placeholder for future 2FA implementation
           setSuccess(response.success);
         })
     });
@@ -97,7 +105,7 @@ export const LoginForm = () => {
               )}
             ></FormField>
           </div>
-          <FormError>{error}</FormError>
+          <FormError>{error || urlError}</FormError>
           <FormSuccess>{success}</FormSuccess>
           <Button
             type="submit"

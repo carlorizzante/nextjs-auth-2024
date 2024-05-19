@@ -8,6 +8,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   // debug: true,
   adapter: PrismaAdapter(db),
+  events: {
+    linkAccount: async (message) => {
+      console.log('linkAccount', message);
+      const { user } = message;
+      await db.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() }
+      });
+    }
+  },
+  session: { strategy: 'jwt' },
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/error',
+  },
   callbacks: {
     async signIn(data) {
       console.log('signIn', data);
@@ -36,15 +51,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
-  events: {
-    linkAccount: async (message) => {
-      console.log('linkAccount', message);
-      const { user } = message;
-      await db.user.update({
-        where: { id: user.id },
-        data: { emailVerified: new Date() }
-      });
-    }
-  },
-  session: { strategy: 'jwt' }
 })

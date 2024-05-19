@@ -17,6 +17,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
 
     try {
       await signIn('credentials', { email, password, redirectTo: REDIRECT_AFTER_LOGIN });
+      // Placeholder for future 2FA implementation
       return { success: 'Logged in successfully' }
 
     } catch (error) {

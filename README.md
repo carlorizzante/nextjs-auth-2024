@@ -14,6 +14,8 @@ pnpm dev
 bun dev
 ```
 
+## Setup or Reset the Database:
+
 Add Prisma to your project:
 
 Create a new db.ts file inside the /lib folder, with the following content:
@@ -53,7 +55,7 @@ Add .env to gitignore:
 echo ".env" >> .gitignore
 ```
 
-Reset database:
+If you want to reset the database:
 
 ```bash
 yarn prisma generate
@@ -61,6 +63,7 @@ yarn prisma migrate reset
 yarn prisma db push
 ``` 
 
+## Page Routing
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

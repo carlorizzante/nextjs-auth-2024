@@ -56,6 +56,7 @@ export const authRoutes = [
   // '/auth/*',
   '/auth/login',
   '/auth/register',
+  '/auth/error',
   // '/auth/forgot-password',
   // '/auth/reset-password',
   // '/auth/verify-email',
