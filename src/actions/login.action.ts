@@ -5,6 +5,7 @@ import * as z from 'zod';
 import { signIn } from '@/auth';
 import { REDIRECT_AFTER_LOGIN } from '@/auth.config';
 import { getUserByEmail } from '@/data';
+import { sendVerificationEmail } from '@/lib/email';
 import { generateVerificationToken } from '@/lib/tokens';
 import { LoginSchema } from '@/schemas';
 
@@ -24,7 +25,10 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
 
     if (!existingUser.emailVerified) {
       const verificationToken = await generateVerificationToken(email);
-      return { error: 'Please verify your email first.', success: 'Verification email sent.' }
+      if (verificationToken) {
+        await sendVerificationEmail(email, verificationToken);
+        return { success: 'Please verify your email first.' }
+      }
     }
 
     try {
