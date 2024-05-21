@@ -4,6 +4,8 @@ import { AuthError } from 'next-auth';
 import * as z from 'zod';
 import { signIn } from '@/auth';
 import { REDIRECT_AFTER_LOGIN } from '@/auth.config';
+import { getUserByEmail } from '@/data';
+import { generateVerificationToken } from '@/lib/tokens';
 import { LoginSchema } from '@/schemas';
 
 export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
@@ -14,6 +16,16 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
 
   } else {
     const { email, password } = validatedValues.data;
+
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser || !existingUser.email || !existingUser.password) {
+      return { error: 'Invalid email or password.' }
+    }
+
+    if (!existingUser.emailVerified) {
+      const verificationToken = await generateVerificationToken(email);
+      return { error: 'Please verify your email first.', success: 'Verification email sent.' }
+    }
 
     try {
       await signIn('credentials', { email, password, redirectTo: REDIRECT_AFTER_LOGIN });

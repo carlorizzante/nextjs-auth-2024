@@ -26,10 +26,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn(data) {
       console.log('signIn', data);
-      return true; // Skip email verification for now
-      const user = await getUserById(data.user.id);
-      console.log('user?.emailVerified', user?.emailVerified)
-      return !!user?.emailVerified
+      const { account } = data;
+      if (account?.provider === 'email' || account?.provider === 'credentials') {
+        const existingUser = await getUserById(data.user.id);
+        return !!existingUser?.emailVerified
+      } else {
+        // TODO: Implement 2FA for OAuth providers
+        return true;
+      }
     },
     async jwt(data) {
       console.log('jwt', data);
