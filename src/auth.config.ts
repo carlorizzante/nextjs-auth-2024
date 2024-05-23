@@ -45,6 +45,7 @@ export default {
  */
 export const publicRoutes = [
   '/',
+  '/auth/email-verification',
 ];
 
 /**

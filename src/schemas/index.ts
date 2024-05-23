@@ -20,3 +20,8 @@ export const RegisterSchema = z.object({
     message: "Minimum 6 characters required"
   }),
 });
+
+export const EmailVerificationSchema = z.object({
+  email: z.string().email(),
+  token: z.string()
+});
