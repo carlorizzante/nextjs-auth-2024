@@ -1,11 +1,11 @@
 'use server';
 
+import { EmailVerificationSchema } from '@/lib/schemas';
 import {
-  getUserByEmail,
   getVerificationTokenByToken,
-} from '@/data';
-import { verifyEmail } from '@/data/verification-token';
-import { EmailVerificationSchema } from '@/schemas';
+  verifyEmail,
+} from '@/lib/token';
+import { getUserByEmail } from '@/lib/user';
 
 export const emailVerification = async (values: { email: string | null; token: string | null; }) => {
   const validatedValues = EmailVerificationSchema.safeParse(values);

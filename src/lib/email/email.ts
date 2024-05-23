@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { VerificationEmail } from './email-verification';
+import { VerificationEmail } from './email-templates';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
