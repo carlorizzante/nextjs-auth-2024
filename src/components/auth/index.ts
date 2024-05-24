@@ -1,5 +1,6 @@
-export { EmailVerificationForm } from './email-verification-form';
+export { VerifyEmailForm } from './verify-email-form';
 export { LoginButton } from './login-button';
 export { LoginForm } from './login-form';
 export { RegisterForm } from './register-form';
+export { ResetForm } from './reset-form';
 export { Social } from './social';

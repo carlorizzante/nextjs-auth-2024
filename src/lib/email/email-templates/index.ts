@@ -1,1 +1,2 @@
-export { VerificationEmail } from './email-verification';
+export { PasswordResetTemplate } from './password-reset-template';
+export { VerifyEmailTemplate } from './verify-email-template';

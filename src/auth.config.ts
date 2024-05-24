@@ -45,22 +45,22 @@ export default {
  */
 export const publicRoutes = [
   '/',
-  '/auth/email-verification',
 ];
 
 /**
  * Auth routes used to authenticate users
  * Redirect to settings page after login
+ * IMPORTANT: These are also public routes
  * @type {string[]}
  */
 export const authRoutes = [
   // '/auth/*',
+  '/auth/verify-email',
+  '/auth/error',
   '/auth/login',
   '/auth/register',
-  '/auth/error',
-  // '/auth/forgot-password',
-  // '/auth/reset-password',
-  // '/auth/verify-email',
+  '/auth/reset-password',
+  '/auth/reset',
 ];
 
 /**

@@ -55,7 +55,7 @@ Add .env to gitignore:
 echo ".env" >> .gitignore
 ```
 
-If you want to reset the database:
+If you want to reset the database, for example after changing the schema, you can run the following commands:
 
 ```bash
 yarn prisma generate

@@ -25,3 +25,9 @@ export const EmailVerificationSchema = z.object({
   email: z.string().email(),
   token: z.string()
 });
+
+export const ResetSchema = z.object({
+  email: z.string().email({
+    message: "Email is required"
+  })
+});

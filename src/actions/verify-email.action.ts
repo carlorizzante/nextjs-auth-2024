@@ -7,7 +7,7 @@ import {
 } from '@/lib/token';
 import { getUserByEmail } from '@/lib/user';
 
-export const emailVerification = async (values: { email: string | null; token: string | null; }) => {
+export const verifyEmailAction = async (values: { email: string | null; token: string | null; }) => {
   const validatedValues = EmailVerificationSchema.safeParse(values);
 
   if (!validatedValues.success) {

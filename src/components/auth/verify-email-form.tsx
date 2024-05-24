@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { BeatLoader } from 'react-spinners';
-import { emailVerification } from '@/actions/email-verification.action';
+import { verifyEmailAction } from '@/actions';
 import {
   CardWrapper,
   FormError,
@@ -10,7 +10,7 @@ import {
 } from '@/components';
 import { Button } from '@/components/ui/button';
 
-export const EmailVerificationForm = () => {
+export const VerifyEmailForm = () => {
   const [isPending, setIsPending] = useState<boolean>();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
@@ -23,7 +23,7 @@ export const EmailVerificationForm = () => {
     setIsPending(true);
     setError(undefined);
     setSuccess(undefined);
-    emailVerification({ email, token })
+    verifyEmailAction({ email, token })
       .then((response) => {
         setIsPending(false);
         setError(response.error);

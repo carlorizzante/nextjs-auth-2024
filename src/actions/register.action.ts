@@ -30,9 +30,9 @@ export const registerAction = async (values: z.infer<typeof RegisterSchema>) => 
           password: hashedPassword,
         },
       });
-      const verificationToken = await generateVerificationToken(email);
-      if (verificationToken) {
-        await sendVerificationEmail(email, verificationToken);
+      const token = await generateVerificationToken(email);
+      if (token) {
+        await sendVerificationEmail(email, token);
         return { success: 'Success! Please look into your inbox folder and confirm your email.' }
       } else {
         return { error: 'Failed to send verification email.' }
