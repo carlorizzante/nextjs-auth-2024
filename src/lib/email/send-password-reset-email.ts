@@ -13,8 +13,8 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
       subject: 'Reset your password',
       react: PasswordResetTemplate({ actionLink })
     });
-    console.log(response);
     return true;
+
   } catch (error) {
     console.error(error);
     return null;

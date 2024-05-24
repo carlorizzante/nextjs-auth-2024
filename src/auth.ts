@@ -10,7 +10,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   events: {
     linkAccount: async (message) => {
-      console.log('linkAccount', message);
+      // console.log('linkAccount', message);
       const { user } = message;
       await db.user.update({
         where: { id: user.id },
@@ -25,7 +25,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   callbacks: {
     async signIn(data) {
-      console.log('signIn', data);
+      // console.log('signIn', data);
       const { account } = data;
       if (account?.provider === 'email' || account?.provider === 'credentials') {
         const existingUser = await getUserById(data.user.id);
@@ -36,7 +36,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
     },
     async jwt(data) {
-      console.log('jwt', data);
+      // console.log('jwt', data);
       // If user has log out, return token
       if (!data.token.sub) return data.token;
       const user = await getUserById(data.token.sub);
@@ -44,7 +44,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return data.token;
     },
     async session(data) {
-      console.log('session', data);
+      // console.log('session', data);
       const { session, token } = data;
       if (token.sub && session.user) {
         session.user.id = token.sub;

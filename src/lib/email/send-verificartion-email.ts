@@ -13,8 +13,8 @@ export const sendVerificationEmail = async (email: string, token: string) => {
       subject: 'Verify your email address',
       react: VerifyEmailTemplate({ actionLink })
     });
-    console.log(response);
     return true;
+
   } catch (error) {
     console.error(error);
     return null;
