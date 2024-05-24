@@ -31,3 +31,15 @@ export const ResetSchema = z.object({
     message: "Email is required"
   })
 });
+
+export const ResetPasswordSchema = z.object({
+  // email: z.string().email({
+  //   message: "Email is required"
+  // }),
+  password: z.string().min(6, {
+    message: "Password is required (min 6 characters)"
+  }),
+  confirmPassword: z.string().min(6, {
+    message: "You need to confirm your password"
+  }),
+});

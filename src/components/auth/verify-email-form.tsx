@@ -14,10 +14,10 @@ export const VerifyEmailForm = () => {
   const [isPending, setIsPending] = useState<boolean>();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
-  const searchParams = useSearchParams();
 
-  const token = searchParams.get('token');
+  const searchParams = useSearchParams();
   const email = searchParams.get('email');
+  const token = searchParams.get('token');
 
   const handleSubmit = () => {
     setIsPending(true);

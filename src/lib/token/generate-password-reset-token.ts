@@ -1,13 +1,13 @@
 import { v4 as uuid } from 'uuid';
 import { db } from '@/lib/db';
 import {
-  getPasswordResetTokenByEmail,
-} from './get-password-reset-token-by-email';
+  getResetPasswordTokenByEmail,
+} from './get-reset-password-token-by-email';
 
 export const generatePasswordResetToken = async (email: string) => {
   const token = uuid();
   const expiresAt = new Date(new Date().getTime() + 1000 * 60 * 10); // 10 minutes
-  const existingToken = await getPasswordResetTokenByEmail(email);
+  const existingToken = await getResetPasswordTokenByEmail(email);
 
   if (existingToken) {
     try {

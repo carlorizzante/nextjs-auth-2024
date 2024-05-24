@@ -31,7 +31,7 @@ export const verifyEmailAction = async (values: { email: string | null; token: s
       return { error: 'Invalid token.' }
     }
     if (new Date(existingToken.expiresAt) < new Date()) {
-      return { error: 'Token expired.' }
+      return { error: 'Token has expired.' }
     }
 
     try {
