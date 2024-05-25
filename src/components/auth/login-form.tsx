@@ -30,6 +30,7 @@ export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
+  const [twoFactor, setTwoFactor] = useState<boolean>();
   const searchParams = useSearchParams();
   const urlError = searchParams.get('error') === 'OAuthAccountNotLinked'
     ? 'This account is already linked to another provider. It is unsafe to automatically link accounts. Please login with your already linked account, or with username and password.'
@@ -50,9 +51,13 @@ export const LoginForm = () => {
       loginAction(values)
         .then((response) => {
           setError(response.error);
-          // Placeholder for future 2FA implementation
           setSuccess(response.success);
+          setTwoFactor(response.twofactor);
         })
+        .catch((error) => {
+          console.log('login-form > An error occurred', error);
+          setError('login-form > An error occurred');
+        });
     });
   }
 
@@ -69,17 +74,34 @@ export const LoginForm = () => {
           className="space-y-6"
         >
           <div className="space-y-6">
+            {twoFactor && <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>2FA Code</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            ></FormField>}
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  {!twoFactor && <FormLabel>Email</FormLabel>}
                   <FormControl>
                     <Input
                       {...field}
                       placeholder="john.doe@example.com"
-                      type="email"
+                      type={!twoFactor ? "email" : "hidden"}
                       disabled={isPending}
                     />
                   </FormControl>
@@ -92,18 +114,18 @@ export const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  {!twoFactor && <FormLabel>Password</FormLabel>}
                   <FormControl>
                     <Input
                       {...field}
                       placeholder="********"
-                      type="password"
+                      type={!twoFactor ? "password" : "hidden"}
                       disabled={isPending}
                     />
                   </FormControl>
-                  <Button variant="link" size="sm" asChild className="px-0 font-normal">
+                  {!twoFactor && <Button variant="link" size="sm" asChild className="px-0 font-normal">
                     <Link href="/auth/reset">Forgot password?</Link>
-                  </Button>
+                  </Button>}
                   <FormMessage />
                 </FormItem>
               )}
@@ -115,7 +137,7 @@ export const LoginForm = () => {
             type="submit"
             className="w-full"
             disabled={isPending}
-          >Login</Button>
+          >{twoFactor ? 'Confirm' : 'Login'}</Button>
         </form>
       </Form>
     </CardWrapper>

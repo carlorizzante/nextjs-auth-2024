@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { type ButtonProps } from '@/components/ui/button';
 import { withChildren } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { type ButtonProps } from '../ui/button';
 
 type LoginButtonProps = withChildren & ButtonProps & {
   mode?: 'modal' | 'redirect';

@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import authConfig from '@/auth.config';
 import { db } from '@/lib/db';
 import { PrismaAdapter } from '@auth/prisma-adapter';
+import { getTwoFactorConfirmationByUserId } from './lib/token';
 import { getUserById } from './lib/user';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -29,11 +30,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const { account } = data;
       if (account?.provider === 'email' || account?.provider === 'credentials') {
         const existingUser = await getUserById(data.user.id);
-        return !!existingUser?.emailVerified
-      } else {
-        // TODO: Implement 2FA for OAuth providers
-        return true;
+        if (!existingUser) return false;
+        if (!existingUser?.emailVerified) return false;
+        if (existingUser?.isTwoFactorEnabled) {
+          const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
+          if (!twoFactorConfirmation) return false;
+          await db.twoFactorConfirmation.delete({
+            where: { id: twoFactorConfirmation.id }
+          });
+        }
       }
+      return true;
     },
     async jwt(data) {
       // console.log('jwt', data);
