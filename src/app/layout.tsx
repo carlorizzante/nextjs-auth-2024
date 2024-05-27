@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import { Poppins } from 'next/font/google';
 import { auth } from '@/auth';
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 
 // import { Inter } from 'next/font/google';
@@ -27,7 +28,10 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={cn(fontSans.className)} suppressHydrationWarning>{children}</body>
+        <body className={cn(fontSans.className)} suppressHydrationWarning>
+          {children}
+          <Toaster />
+        </body>
       </html>
     </SessionProvider>
   );
