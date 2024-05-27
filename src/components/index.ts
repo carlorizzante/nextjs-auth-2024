@@ -6,4 +6,5 @@ export { FormSuccess } from './form-success';
 export { Header } from './header';
 export { Navbar, NavbarItem } from './navbar';
 export { Social } from './auth/social';
+export { UserInfo } from './user-info';
 export * from './auth';

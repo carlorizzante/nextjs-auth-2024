@@ -42,24 +42,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return true;
     },
-    async jwt(data) {
+    async jwt({ token }) {
       // console.log('jwt', data);
       // If user has log out, return token
-      if (!data.token.sub) return data.token;
-      const user = await getUserById(data.token.sub);
-      if (user) data.token.role = user.role;
-      return data.token;
+      if (!token.sub) return token;
+      // Else, extend user token with role and isTwoFactorEnabled
+      const user = await getUserById(token.sub);
+      if (user) {
+        token.role = user.role;
+        token.isTwoFactorEnabled = user.isTwoFactorEnabled;
+      }
+      return token;
     },
     async session(data) {
       // console.log('session', data);
       const { session, token } = data;
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
-      }
-      if (token.role && session.user) {
+      if (session.user) {
+        if (token.sub) session.user.id = token.sub;
         session.user.role = token.role;
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
       }
       return session;
     },
-  },
+  }
 })

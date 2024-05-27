@@ -2,6 +2,7 @@ import { DefaultSession } from 'next-auth';
 
 export type ExtendedUser = DefaultSession['user'] & {
   role: $Enums.UserRole;
+  isTwoFactorEnabled: boolean;
 }
 
 declare module "next-auth" {
@@ -13,5 +14,6 @@ declare module "next-auth" {
 declare module "@auth/core/jwt" {
   interface JWT {
     role: $Enums.UserRole;
+    isTwoFactorEnabled: boolean;
   }
 }

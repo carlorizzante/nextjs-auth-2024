@@ -12,9 +12,11 @@ export default async function ProtectedLayout({ children }: Readonly<withChildre
   return (
     <div className={cn(style_layout, style_gradient)}>
       <Navbar>
+        <NavbarItem href="/admin">Admin</NavbarItem>
+        <NavbarItem href="/client">Client</NavbarItem>
+        <NavbarItem href="/server">Server</NavbarItem>
         <NavbarItem href="/settings-client">Settings Client</NavbarItem>
         <NavbarItem href="/settings">Settings Server</NavbarItem>
-        <NavbarItem href="/admin">Admin</NavbarItem>
       </Navbar>
       {children}
     </div>
