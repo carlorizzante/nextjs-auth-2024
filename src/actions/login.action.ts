@@ -86,11 +86,11 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
 
     } catch (error) {
       if (error instanceof AuthError) {
+        console.log('login.action', error)
         switch (error.type) {
           case 'CredentialsSignin' || 'CredentialsVerification':
             return { error: 'Invalid email or password.' }
           default:
-            console.log('login.action > An error occurred.', error)
             return { error: 'login.action > An error occurred.' }
         }
       }

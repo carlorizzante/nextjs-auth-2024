@@ -20,9 +20,8 @@ export default function SettingsPage() {
   }
 
   return (
-    <div>
-      <h1>Settings</h1>
-      <p>Settings page</p>
+    <div className="max-w-4xl bg-white p-10 rounded-xl">
+      <h1>Settings Client</h1>
       <p>{JSON.stringify(user)}</p>
 
       <button onClick={handleSignOut}>Logout (from next-auth/react)</button>
