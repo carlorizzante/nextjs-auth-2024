@@ -12,7 +12,10 @@ export default function Home() {
         <h1 className="text-6xl font-semibold text-white drop-shadow-md">🔐 Auth</h1>
         <p className="text-lg text-white">A simple authentication service</p>
         <LoginButton className="block">
-          <Button variant="secondary" size="lg">Sign in</Button>
+          <Button variant="secondary" size="lg">Sign in (redirect)</Button>
+        </LoginButton>
+        <LoginButton className="block" mode="modal" asChild>
+          <Button variant="secondary" size="lg">Sign in (modal)</Button>
         </LoginButton>
       </div>
     </main >
