@@ -11,7 +11,6 @@ import { generateVerificationToken } from '@/lib/token';
 import { getUserById } from '@/lib/user';
 
 export const saveSettingsAction = async (values: z.infer<typeof SettingsSchema>) => {
-  console.log('settings-action > values', values);
   const user = await currentUser();
   const userFromDB = await getUserById(user?.id);
 

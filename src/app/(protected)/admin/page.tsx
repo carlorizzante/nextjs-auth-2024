@@ -28,7 +28,6 @@ export default function AdminPage() {
         }
         return res.json();
       })
-      .then((data) => console.log(data))
       .catch((error) => console.error(error))
   }
   const handleAdminAction = async () => {

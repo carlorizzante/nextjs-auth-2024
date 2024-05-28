@@ -18,7 +18,7 @@ import {
 } from '@/lib/token/generate-two-factor-confirmation';
 import { getUserByEmail } from '@/lib/user';
 
-export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
+export const loginAction = async (values: z.infer<typeof LoginSchema>, callbackUrl?: string | null) => {
   const validatedValues = LoginSchema.safeParse(values);
 
   if (!validatedValues.success) {
@@ -81,7 +81,7 @@ export const loginAction = async (values: z.infer<typeof LoginSchema>) => {
     }
 
     try {
-      await signIn('credentials', { email, password, redirectTo: REDIRECT_AFTER_LOGIN });
+      await signIn('credentials', { email, password, redirectTo: callbackUrl || REDIRECT_AFTER_LOGIN });
       return { success: 'Logged in successfully' }
 
     } catch (error) {

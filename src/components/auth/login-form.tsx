@@ -33,6 +33,7 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>();
   const [twoFactor, setTwoFactor] = useState<boolean>();
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl');
   const urlError = searchParams.get('error') === 'OAuthAccountNotLinked'
     ? 'This account is already linked to another provider. It is unsafe to automatically link accounts. Please login with your already linked account, or with username and password.'
     : undefined;
@@ -49,7 +50,7 @@ export const LoginForm = () => {
     setError(undefined);
     setSuccess(undefined);
     startTransition(() => {
-      loginAction(values)
+      loginAction(values, callbackUrl)
         .then((response) => {
           setError(response.error);
           setSuccess(response.success);

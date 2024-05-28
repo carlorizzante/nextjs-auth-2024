@@ -7,7 +7,7 @@ import { LoginSchema } from './lib/schemas';
 import { getUserByEmail } from './lib/user';
 
 export default {
-  debug: true,
+  // debug: true,
   providers: [
     Github({
       clientId: process.env.GITHUB_CLIENT_ID,

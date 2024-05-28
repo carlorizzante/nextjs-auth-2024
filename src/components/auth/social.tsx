@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { REDIRECT_AFTER_LOGIN } from '@/auth.config';
@@ -14,8 +15,9 @@ import { cn } from '@/lib/utils';
 type SocialProps = withChildren & WithClassName;
 
 export const Social = ({ children, className }: SocialProps) => {
+  const callbackUrl = useSearchParams().get('callbackUrl');
   const handleClick = (provider: 'google' | 'github') => () => {
-    signIn(provider, { callbackUrl: REDIRECT_AFTER_LOGIN });
+    signIn(provider, { callbackUrl: callbackUrl || REDIRECT_AFTER_LOGIN });
   };
 
   return (

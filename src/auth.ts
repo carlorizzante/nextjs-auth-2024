@@ -8,7 +8,6 @@ import { getUserById } from './lib/user';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
-  // debug: true,
   adapter: PrismaAdapter(db),
   events: {
     linkAccount: async (message) => {
