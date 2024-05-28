@@ -1,4 +1,5 @@
 'use client';
+
 import {
   useState,
   useTransition,
@@ -108,7 +109,7 @@ export const LoginForm = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
             <FormField
               control={form.control}
               name="password"
@@ -129,7 +130,7 @@ export const LoginForm = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
           </div>
           <FormError>{error || urlError}</FormError>
           <FormSuccess>{success}</FormSuccess>

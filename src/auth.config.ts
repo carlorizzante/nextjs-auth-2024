@@ -75,7 +75,7 @@ export const API_AUTH_PREFIX = '/api/auth';
  * Routes that start with this prefix are usewd for API authentication purposes
  * @type {string}
  */
-export const REDIRECT_AFTER_LOGIN = '/settings';
+export const REDIRECT_AFTER_LOGIN = '/settings-client';
 
 /**
  * Default login route

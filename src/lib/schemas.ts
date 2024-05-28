@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { UserRole } from '@prisma/client';
 
 export const LoginSchema = z.object({
   email: z.string().email({
@@ -46,3 +47,18 @@ export const ResetPasswordSchema = z.object({
     message: "You need to confirm your password"
   }),
 });
+
+export const SettingsSchema = z.object({
+  name: z.optional(z.string()),
+  email: z.optional(z.string().email()),
+  password: z.optional(z.string().min(6)),
+  confirmPassword: z.optional(z.string().min(6)),
+  role: z.optional(z.enum([UserRole.ADMIN, UserRole.USER])),
+  isTwoFactorEnabled: z.optional(z.boolean()),
+})
+  .refine(data => {
+    return data.password === data.confirmPassword;
+  }, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"]
+  });

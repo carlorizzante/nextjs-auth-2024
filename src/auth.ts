@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import authConfig from '@/auth.config';
 import { db } from '@/lib/db';
 import { PrismaAdapter } from '@auth/prisma-adapter';
+import { getAccountByUserId } from './lib/account';
 import { getTwoFactorConfirmationByUserId } from './lib/token';
 import { getUserById } from './lib/user';
 
@@ -43,14 +44,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true;
     },
     async jwt({ token }) {
-      // console.log('jwt', data);
+      // console.log('jwt', token);
       // If user has log out, return token
       if (!token.sub) return token;
       // Else, extend user token with role and isTwoFactorEnabled
       const user = await getUserById(token.sub);
       if (user) {
+        const account = await getAccountByUserId(user.id);
+        token.name = user.name;
+        token.email = user.email;
         token.role = user.role;
         token.isTwoFactorEnabled = user.isTwoFactorEnabled;
+        token.isOAuth = !!account?.providerAccountId;
       }
       return token;
     },
@@ -59,8 +64,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const { session, token } = data;
       if (session.user) {
         if (token.sub) session.user.id = token.sub;
+        if (token.name) session.user.name = token.name;
+        if (token.email) session.user.email = token.email;
         session.user.role = token.role;
         session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
+        session.user.isOAuth = !!token.isOAuth;
       }
       return session;
     },

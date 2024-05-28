@@ -16,7 +16,7 @@ export default async function ProtectedLayout({ children }: Readonly<withChildre
         <NavbarItem href="/client">Client</NavbarItem>
         <NavbarItem href="/server">Server</NavbarItem>
         <NavbarItem href="/settings-client">Settings Client</NavbarItem>
-        <NavbarItem href="/settings">Settings Server</NavbarItem>
+        <NavbarItem href="/settings-server">Settings Server</NavbarItem>
       </Navbar>
       {children}
     </div>
