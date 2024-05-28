@@ -4,7 +4,7 @@ import { VerifyEmailTemplate } from './email-templates';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendVerificationEmail = async (email: string, token: string) => {
-  const actionLink = `${process.env.NEXTAUTH_URL}/auth/verify-email?token=${token}&email=${email}`;
+  const actionLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/verify-email?token=${token}&email=${email}`;
 
   try {
     const response = await resend.emails.send({

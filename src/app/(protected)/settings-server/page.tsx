@@ -1,4 +1,4 @@
-import { settingsAction } from '@/actions/settings.action';
+import { saveSettingsAction } from '@/actions';
 import { auth } from '@/auth';
 import { FormSuccess } from '@/components';
 import { RoleGate } from '@/components/auth/role-gate';
@@ -14,7 +14,7 @@ export default async function SettingsServerPage() {
   const session = await auth();
 
   const handleUpdateName = async () => {
-    await settingsAction({ name: 'New Name' });
+    await saveSettingsAction({ name: 'New Name' });
   }
 
   return (
